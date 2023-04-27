@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TemplePostController;
+use App\Http\Controllers\TempleCommentController;
 use App\Http\Controllers\MetaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,8 @@ Route::post('showDetail', [TemplePostController::class , 'showDetail']);
 
 Route::post('upload', [MetaController::class , 'upload']); 
 Route::post('createMeta', [MetaController::class , 'createMeta']); 
+
+
+Route::post('createComment', [TempleCommentController::class , 'createComment']); 
 
 

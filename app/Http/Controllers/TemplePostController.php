@@ -151,8 +151,13 @@ class TemplePostController extends Controller
         
 
         $post = TemplePost::with(['user',
-            'meta'   
-        ])->first();
+            'meta',
+            'meta.user',
+            'comment',  
+            'comment.user',  
+            'comment.replies',  
+            'comment.replies.user',  
+    ])->find(1);
 
         
         return response()->json([
