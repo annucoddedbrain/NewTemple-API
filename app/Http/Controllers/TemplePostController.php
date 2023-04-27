@@ -7,26 +7,31 @@ use App\Models\TemplePost;
 use App\Models\User;
 use App\Models\Meta;
 use Illuminate\Support\Facades\Validator;
+// now write here
 
+// annu likho yaha 
+
+
+// kya likhna h
 
 class TemplePostController extends Controller
 {
-    public function createPost(Request $request){
+    public function createPost(Request $request){ // step 1
         // $user = User::all();
         $user = User::first();
 
 
+        //step 2 collect all post related data
         $validator = Validator::make($request->all(), [
-            // 'title' => 'required|string',               
-            // 'description' => 'required|string',
-            // 'location' => 'required|string',
-            // 'location_LatLng' => 'string|nullable',
-            // 'time_table' => 'string|nullable',
-            'filenames' => 'required',     // media files
-           
+            'title' => 'required|string',               
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'location_LatLng' => 'string|nullable',
+            'time_table' => 'string|nullable',
+            'filenames' => 'required',     
         ]);
 
-        
+        //step 3 check point 
         if ($validator->fails()) {
             return response()->json([
                 "error" => $validator->messages()
@@ -35,16 +40,17 @@ class TemplePostController extends Controller
         }
         else
         {
-            if($validator)
+            if($validator) // step 4 enter into main process 
             {
-                // $post = TemplePost::create([
-                //     'title' => $request->title,
-                //     'description' => $request->description,
-                //     'location' => $request->location,
-                //     'location_LatLng' => $request->location_LatLng,
-                //     'time_table' => $request->time_table,
-                //     'user_id' => $user->id,
-                // ]);
+                // post table data save 
+                $post = TemplePost::create([
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'location' => $request->location,
+                    'location_LatLng' => $request->location_LatLng,
+                    'time_table' => $request->time_table,
+                    'user_id' => $user->id,
+                ]);
 
                 // $total_files = count($request->file('filenames'));
                 $total_files = [];
@@ -57,26 +63,27 @@ class TemplePostController extends Controller
         
                     // store in db
                     $fileUpload = new Meta();
-                    $fileUpload->filenames = $path.$name;
+                    $fileUpload->filenames = $name;
                     $fileUpload->path = $path;
                     $fileUpload->size = "10";
                     $fileUpload->type = $file->getClientOriginalExtension();
-                    $fileUpload->user_id = 1;
-                    $fileUpload->temple_post_id = 1;
+                    $fileUpload->user_id = $post->user_id;
+                    $fileUpload->temple_post_id = $post->id;
                     $fileUpload->save();
     
                     array_push($total_files,$fileUpload);
                 }
                 
-                return response()->json($total_files);
+                // return response()->json($total_files);
 
-                //  if($post->save() && $media->save()){
+                 if($post->save() && $fileUpload->save()){
 
-                // return response()->json([
-                //     "status" => true,
-                //     "message" => "User has been posted successfully.",
-                //     "data" => $post .$media
-                // ]);
+                return response()->json([
+                    "status" => true,
+                    "message" => "User has been posted successfully.",
+                    "data" => $post ,
+                    "files"=> $total_files
+                ]);
             } 
             else{
                 return response()->json([
@@ -85,9 +92,9 @@ class TemplePostController extends Controller
             }
 
  
-            }
-        }
-    public function createMeta(Request $request){
+            }}}
+        
+        public function createMeta(Request $request){
         // $user = User::all();
         $user = User::first();
         $post = TemplePost::first();

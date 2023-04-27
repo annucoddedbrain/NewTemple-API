@@ -25,4 +25,6 @@ class TemplePost extends Model
     public function meta(){
         return $this->hasMany(Meta::class);
     }
+
+    // hmm bolo ky likha h isme
 }
