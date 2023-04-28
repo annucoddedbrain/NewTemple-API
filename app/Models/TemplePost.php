@@ -26,9 +26,9 @@ class TemplePost extends Model
         return $this->hasMany(Meta::class);
     }
 
-    public function comment(){
-        return $this->hasMany(TempleComment::class)->whereNull('parent_id');
-    }
 
-    // hmm bolo ky likha h isme
+    public function comments(){
+        return $this->hasMany(TempleComment::class);
+    }
+    
 }

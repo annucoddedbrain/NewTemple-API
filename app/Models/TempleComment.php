@@ -12,7 +12,7 @@ class TempleComment extends Model
     protected $table = 'temple_comments';
 
     protected $fillable = [
-        'temple_post_id',
+        'post_id',
         'user_id',
         'comment',
         'parent_id'
@@ -29,10 +29,5 @@ class TempleComment extends Model
     public function replies(){
         return $this->hasMany(TempleComment::class , 'parent_id');
     }
-
-    // public function likes()
-    // {
-    //      return $this->morphMany(Like::class, 'likeable')->where('liked','1');
-    // }    
 
 }

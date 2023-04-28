@@ -147,16 +147,16 @@ class TemplePostController extends Controller
     }
 
     
-    public function showDetail(Request $request){
+    public function showDetail(){
         
 
         $post = TemplePost::with(['user',
             'meta',
             'meta.user',
-            'comment',  
-            'comment.user',  
-            'comment.replies',  
-            'comment.replies.user',  
+            'comments',  
+            'comments.user',  
+            'comments.replies',  
+            // 'comment.replies.user',  
     ])->find(1);
 
         
