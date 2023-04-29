@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use App\Models\User;
+//use Illuminate\Foundation\Auth\User;
 use App\Models\User;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +24,6 @@ class UserController extends Controller
 
         return response()->json($user);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -38,6 +40,7 @@ class UserController extends Controller
             "username" => "string|regex:/\w*$/|min:6|unique:users,username"
         ];
         $validator = Validator::make($request->all(), $rules);
+        
 
         if ($validator->fails())
         {
@@ -47,38 +50,80 @@ class UserController extends Controller
                 "errors" => $validator->errors()
             ]);
 
-        }else
+        }
+
+        $input = $request->all();
+        $input['password']= bcrypt($input['password']);
+        $user = User::create($input);
+
+        $success ['first_name'] = $user->first_name;
+        $success ['last_name'] = $user->last_name;
+        $success ['username'] = $user->username;
+        $success ['email'] = $user->email;
+        $success ['phone'] = $user->phone;
+        $success ['password'] = $user->password;
+        $success['remember_token'] =$user->createToken(env("APP_TOKEN", ''))->plainTextToken;
+
+
+                    
+        return response()->json([
+            "status" => true,
+            "message" => "User has been registered successfully.",
+            "data" => $success,
+        ]);
+        // else
+        // {
+        //     if($validator)
+        //     {
+        //         $user = new User;
+        //         $user->first_name=$request->first_name;
+        //         $user->last_name=$request->last_name;
+        //         $user->username=$request->username;
+        //         $user->email=$request->email;
+        //         $user->phone=$request->phone;
+        //         $user->password=$request->bcrypt('password');
+
+        //         $user->remember_token = $user->createToken(env("APP_TOKEN", ''))->plainTextToken;
+
+               
+
+        //         if($user)
+        //         {
+        //             $userdata = Auth::user();
+
+        //             return response()->json([
+        //             "status" => true,
+        //             "message" => "User has been registered successfully.",
+        //             "data" => $user,
+        //             'authorisation' => [
+        //                 'token' => $user->remember_token,
+        //                 'type' => 'bearer',
+        //             ]
+        //             ]);
+        //         } 
+        //         else
+        //         {
+        //             return response()->json([
+        //             "message" => "error"
+        //             ]);
+        //          } 
+        //     }
+        // }
+    }
+
+    public function login(Request $request){
+        if(Auth::attempt(['email' => $request->email,'password' => $request->password]))
         {
-            if($validator)
-            {
-                $user = new User;
-                $user->first_name=$request->first_name;
-                $user->last_name=$request->last_name;
-                $user->username=$request->username;
-                $user->email=$request->email;
-                $user->phone=$request->phone;
-                $user->password=$request->password;
-                $user->save();
-
-
-
-                $user->remember_token = $user->createToken(env("APP_TOKEN", ''))->plainTextToken;
-
-                if($user->save())
-                {
-                    return response()->json([
-                    "status" => true,
-                    "message" => "User has been registered successfully.",
-                    "data" => $user
-                    ]);
-                } 
-                else
-                {
-                    return response()->json([
-                    "message" => "error"
-                    ]);
-                 } 
-            }
+            return response()->json([
+            "status" => true,
+            "message" => "User has been login successfully.",
+            "data" =>Auth::user(),
+        ]);
+        }else{
+            return response()->json([
+                "status" => false,
+                "message" => " error ",
+            ]);
         }
     }
 

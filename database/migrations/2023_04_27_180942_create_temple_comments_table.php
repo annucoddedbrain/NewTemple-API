@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('temple_post_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->text('comment');
+            $table->text('rating');
             $table->timestamps();
         });
     }

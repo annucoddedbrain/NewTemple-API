@@ -12,9 +12,10 @@ class TempleComment extends Model
     protected $table = 'temple_comments';
 
     protected $fillable = [
-        'post_id',
+        'temple_post_id',
         'user_id',
         'comment',
+        'rating',
         'parent_id'
     ];
 

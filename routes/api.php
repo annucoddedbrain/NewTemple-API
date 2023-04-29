@@ -4,6 +4,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TemplePostController;
 use App\Http\Controllers\TempleCommentController;
 use App\Http\Controllers\MetaController;
+use App\Models\User;
+
+use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,13 +23,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {  
+
     return $request->user();
 });
-
-Route::post('createUser', [UserController::class , 'create']);   // for uploading User details
-Route::post('show', [UserController::class , 'index']); // for showing all User details
-
+ 
+Route::controller(UserController::class)->group(function(){
+    Route::post('login','login');
+    Route::post('create','create');
+});
 Route::post('createPost', [TemplePostController::class , 'createPost']); 
 Route::post('showDetail', [TemplePostController::class , 'showDetail']); 
 

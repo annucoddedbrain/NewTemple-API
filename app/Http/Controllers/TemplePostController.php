@@ -7,6 +7,7 @@ use App\Models\TemplePost;
 use App\Models\User;
 use App\Models\Meta;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 // now write here
 
 // annu likho yaha 
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Validator;
 
 class TemplePostController extends Controller
 {
+    
     public function createPost(Request $request){ // step 1
         // $user = User::all();
         $user = User::first();
+        // $user = Auth();
 
 
         //step 2 collect all post related data
@@ -77,6 +80,14 @@ class TemplePostController extends Controller
                 // return response()->json($total_files);
 
                  if($post->save() && $fileUpload->save()){
+                    
+                // LOAD TIME SO LONG
+                 //   $meta = Meta::where('temple_post_id', '=',$post->id)->get();
+
+
+                    //$product->user_id = $request->get("user_id");
+
+                    
 
                 return response()->json([
                     "status" => true,
@@ -147,7 +158,7 @@ class TemplePostController extends Controller
     }
 
     
-    public function showDetail(){
+    public function showDetail(Request $request){
         
 
         $post = TemplePost::with(['user',
@@ -157,7 +168,7 @@ class TemplePostController extends Controller
             'comments.user',  
             'comments.replies',  
             // 'comment.replies.user',  
-    ])->find(1);
+    ])->find($request->user_id);
 
         
         return response()->json([

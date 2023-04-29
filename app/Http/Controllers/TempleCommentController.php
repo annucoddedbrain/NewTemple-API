@@ -14,10 +14,6 @@ class TempleCommentController extends Controller
     public function createComment(Request $request){
         $user = User::all()->first();
         $post = TemplePost::all()->first();
-        // $comment=Comment::all();
-        // $user = User::first();
-
-    
 
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string',
@@ -41,6 +37,7 @@ class TempleCommentController extends Controller
                     'user_id' => $user->id,
                     'temple_post_id' => $post->id,
                     'comment' => $request->comment,
+                    'rating' => $request->rating,
                     'parent_id' => $request->parent_id
                 ]);
 
