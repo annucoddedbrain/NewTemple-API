@@ -166,9 +166,11 @@ class TemplePostController extends Controller
             'meta.user',
             'comments',  
             'comments.user',  
-            'comments.replies',  
-            // 'comment.replies.user',  
-    ])->find($request->user_id);
+            'comments.replies',
+            'comments.replies.user',  
+    ])->first();
+    // ->find($request->user_id);
+    // ->find($request->temple_post_id);
 
         
         return response()->json([

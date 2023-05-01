@@ -12,17 +12,17 @@ use App\Models\User;
 class TempleCommentController extends Controller
 {
     public function createComment(Request $request){
-        $user = User::all()->first();
-        $post = TemplePost::all()->first();
+        $user = User::all()->find(2);
+        $post = TemplePost::all()->find(2);
 
         $validator = Validator::make($request->all(), [
             'comment' => 'required|string',
             // 'post_id' => 'required',
             // 'user_id' => 'required',
-            'parent_id' => 'nullable'
+            'parent_id' => 'nullable',
+            'rating' => 'required|min:1|max:5|integer'
         ]);
 
-        
         if ($validator->fails()) {
             return response()->json([
                 "error" => $validator->messages()
