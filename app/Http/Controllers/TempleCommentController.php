@@ -61,10 +61,10 @@ class TempleCommentController extends Controller
 
     public function getAllCommentByPost_id(Request $request){
         
-        $comment = TempleComment::with([
+        $comment = TemplePost::with([
             'user',
             'posts'
-        ])->first();
+        ])->get();
 
         
         return response()->json([

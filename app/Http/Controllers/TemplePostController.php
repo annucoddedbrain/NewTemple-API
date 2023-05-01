@@ -158,7 +158,7 @@ class TemplePostController extends Controller
     }
 
     
-    public function showDetail(Request $request){
+    public function getallTemples(Request $request){
         
 
         $post = TemplePost::with(['user',
@@ -168,7 +168,8 @@ class TemplePostController extends Controller
             'comments.user',  
             'comments.replies',
             'comments.replies.user',  
-    ])->first();
+    ])->get();
+    // ->first();
     // ->find($request->user_id);
     // ->find($request->temple_post_id);
 

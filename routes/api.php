@@ -33,12 +33,14 @@ Route::controller(UserController::class)->group(function(){
     Route::post('create','create');
 });
 Route::post('createPost', [TemplePostController::class , 'createPost']); 
-Route::post('showDetail', [TemplePostController::class , 'showDetail']); 
+Route::post('getallTemples', [TemplePostController::class , 'getallTemples']); 
 
 Route::post('upload', [MetaController::class , 'upload']); 
 Route::post('createMeta', [MetaController::class , 'createMeta']); 
 
 
 Route::post('createComment', [TempleCommentController::class , 'createComment']); 
+
+Route::post('getAllCommentByPost_id' , [TempleCommentController::class , 'getAllCommentByPost_id']);
 
 
